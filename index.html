@@ -1,0 +1,180 @@
+<html>
+<head> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Tangerine|Coda' rel='stylesheet' type='text/css'>
+  <meta name="description" content="A digital artpiece of colors by Russell Jennings">
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+</head>
+<style>
+html,body,div,section{margin:none;padding:none;}
+body{background-color: black;}
+div.color-box{transition-duration: 0s;}
+#legend{margin-top:20px;}
+#legend .color-box{width:2.48%;}
+#display{background-color: #444;}
+div.color-box{width:1%;margin:0.20%;height:10px;display:inline-block;padding:none;border-radius:2px;}
+header{height: 150px;}
+footer p, header h1{text-align: center;color:#282828;margin-left:.21%;margin-top:5px;}
+header h1{font-family: 'Tangerine', cursive;font-size:6em;margin:20px 20px 0px .21%;}
+footer{margin:50px 0px;}
+footer p{color:#555;font-family: 'Coda', cursive;font-size:0.7em;}
+</style>
+<body>
+  <header>
+    <h1>colorage.io</h1>
+   
+  </header>
+  <section id='display'></section><div style='clear:both'></div>
+  <section id='legend'></section><div style='clear:both'></div>
+  <footer>
+     <p>A Digital Artpiece By Russell Jennings</p>
+  </footer>
+
+</body>
+<script type='text/javascript'>
+  chance = 1000
+  multi = 62
+  _(multi).times(function(ln){
+    _(multi).times(function(col){
+    $('#display').append("<div class='color-box colorable'></div>");
+    });
+  });
+  _(61).times(function(){
+    $('#display').append("<div class='color-box colorable'></div>");
+  });
+  $('#legend').append("<div class='color-box' id='pri'></div>");
+  $('#legend').append("<div class='color-box' id='sec'></div>");
+  $('#legend').append("<div class='color-box' id='tri'></div>");
+  function colorsArray(){
+    return ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B','C', 'D']
+  }
+  function getColor(colors){
+    return _.indexOf(colors, _.sample(colors));
+  };
+  function randomColor(){
+    return "#" + _.sample(colorsArray()) + _.sample(colorsArray()) + _.sample(colorsArray())
+  }
+  function colorOutput(r,g,b){
+    return  "#" + colorsArray()[r] + colorsArray()[g] + colorsArray()[b]
+  }
+  function assignColors(obj,r,g,b){
+    arr = ['#f00', '#800', '#000', '#000', '#000', '#000', '#000','#000', '#000']
+    if(true){
+      obj.css('background-color',colorOutput(r,g,b));
+    }else{
+      obj.css('background-color','black');
+    }
+
+  }
+  function tweakValue(c){
+    if(c >= 15){
+      v= _.sample([15,13])
+    }
+    else if (c == 0){
+      v= _.sample([0,2])
+    }else{
+      if(Math.random() <= 0.5){ 
+        v=c + 1
+      }else{
+        v=c + -1
+      }
+    }
+    return v
+  }
+
+  $(document).ready(function(){
+    duration = 1
+    primaryChance = 1
+    secondaryChance = 1
+    tietaryChance = 1
+    r = getColor(colorsArray())
+    g = getColor(colorsArray())
+    b = getColor(colorsArray())
+    rr = r
+    gg = g
+    bb = b
+    rrr = r
+    ggg = g
+    bbb = b
+    row = 0
+    col = 0
+    primary = colorOutput(r,g,b)
+    secondary = colorOutput(rr,gg,bb)
+    tietary = colorOutput(rrr,ggg,bbb)
+    durationA = 1
+    durationB = 1
+
+      setInterval(function(){
+        primaryChance = _.sample(_.range(multi * 3))
+        secondaryChance = _.sample(_.range(multi * 2))
+        tietaryChance = _.sample(_.range(multi))
+        durationA = _.sample([0,3])
+        durationB = _.sample([0,2,5,8])
+      }, 4000);
+
+
+      setInterval(function(){
+        _(_.sample([0,3,7])).times(function(){
+          rr = tweakValue(rr)
+          gg = tweakValue(gg)
+          bb = tweakValue(bb)
+        });
+        secondaryChance = _.sample(_.range(multi * 10))
+      }, 30000);
+
+      setInterval(function(){
+        r = tweakValue(r)
+        g = tweakValue(g)
+        b = tweakValue(b)
+        primary = colorOutput(r,g,b)
+        $('#pri').css('background-color', primary)
+      }, 250);
+
+      setInterval(function(){
+        rr = tweakValue(rr)
+        gg = tweakValue(gg)
+        bb = tweakValue(bb)
+        secondary = colorOutput(rr,gg,bb)
+        $('#sec').css('background-color', secondary)
+      }, 250);
+
+      setInterval(function(){
+        rrr = tweakValue(rrr)
+        ggg = tweakValue(ggg)
+        bbb = tweakValue(bbb)
+        tietary = colorOutput(rrr,ggg,bbb)
+        $('#tri').css('background-color', tietary)
+      }, 250);
+
+      setInterval(function(){
+        rr = tweakValue(b)
+        gg = tweakValue(r)
+        bb = tweakValue(g)
+      }, 30000);
+
+      setInterval(function(){
+        rrr = tweakValue(g)
+        ggg = tweakValue(b)
+        bbb = tweakValue(r)
+      }, 10000);
+                            
+
+      setInterval(function(){
+        $(_.sample($('div.color-box.colorable'),primaryChance)).css('background-color', primary)
+      }, 100);
+
+      setInterval(function(){
+        $(_.sample($('div.color-box.colorable'),secondaryChance)).css('background-color', secondary )
+      }, 100);
+
+      setInterval(function(){
+        $(_.sample($('div.color-box.colorable'),tietaryChance)).css('background-color', tietary )
+      }, 100);
+
+      setInterval(function(){
+        $(_.sample($('div.color-box.colorable'),1000)).css('transition-duration', durationA + '.' + durationB + "s" )
+      }, 1500);
+  });
+</script>
+</html>
